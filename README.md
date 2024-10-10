@@ -36,6 +36,7 @@ This is a basic Django project that includes two applications: `store` and `orde
   # Store
     /store/: Displays the store home page.
     /store/products/: Displays the list of products.
+    /store/categories/: Displays the list of categories.
   # Order
     /order/: Displays the order home page.
     /order/details/: Displays order details.
