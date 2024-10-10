@@ -27,7 +27,7 @@ class ProductListView(View):
             {
                 'id': product.id,
                 'name': product.name,
-                'image': product.image.url,
+                'image': "http://127.0.0.1:8000" + product.image.url,
                 'categories': [{'id': category.parent.id, 'name': category.parent.name}
                                for category in product.categories.all()]
             }
