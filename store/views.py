@@ -5,7 +5,7 @@ from .models import Category, Product
 
 class CategoryListView(View):
     def get(self, request, *args, **kwargs):
-        # a category may not have a parent, therefore, it will be null and I filter it.
+        # a category may not have a parent, therefore, it will be null and I filter it so it fatches only those.
         categories = Category.objects.filter(parent__isnull=True)
         # getting every category with its children
         category_data = [
