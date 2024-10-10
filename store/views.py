@@ -5,9 +5,8 @@ from .models import Category, Product
 
 class CategoryListView(View):
     def get(self, request, *args, **kwargs):
-        # a category may not have a parent, therefore, it will be null and I filter it so it fatches only those.
-        categories = Category.objects.filter(parent__isnull=True)
-        # getting every category with its children
+        categories = Category.objects.filter()
+        # I am getting all categories with its children
         category_data = [
             {
                 'id': category.id,
@@ -28,7 +27,9 @@ class ProductListView(View):
             {
                 'id': product.id,
                 'name': product.name,
-                'categories': [{'id': category.id, 'name': category.name} for category in product.categories.all()]
+                'image': product.image.url,
+                'categories': [{'id': category.parent.id, 'name': category.parent.name}
+                               for category in product.categories.all()]
             }
             for product in products
         ]
