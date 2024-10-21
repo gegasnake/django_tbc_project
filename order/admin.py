@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import UserCart
+from .models import Cart
 
 
-@admin.register(UserCart)
+@admin.register(Cart)
 class UserCartAdmin(admin.ModelAdmin):
     list_display = ('user',)
     search_fields = ('user__email',)

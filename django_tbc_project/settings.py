@@ -32,7 +32,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -132,3 +131,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.CustomUser'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # Adjust according to your app name
+]

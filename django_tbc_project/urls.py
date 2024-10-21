@@ -20,9 +20,9 @@ from django_tbc_project import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('store/', include('store.urls')),
     path('order/', include('order.urls')),
+    path('admin/', admin.site.urls),
 ]
 
 

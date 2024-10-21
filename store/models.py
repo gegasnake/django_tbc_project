@@ -2,47 +2,26 @@ from django.db import models
 
 
 class Category(models.Model):
-    # Each category may have a parent category (it is a recursive relationship)
-    # in previous week I returned children on json response which is incorrect. now I return a category and a parent
     name = models.CharField(max_length=255)
-    parent = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='subcategories'
-    )
+    slug = models.SlugField(default="category-default-slug")
 
     def __str__(self):
-        if self.parent:
-            return f'{self.name} (Parent: {self.parent.name})'
-        else:
-            return self.name
-
-    def get_children(self):
-        """ Return the children (subcategories) of this category """
-        return self.subcategories.all()
-
-    def get_product_count(self, accumulator=0):
-        """ recursive function using accumulator which is actively used in functional programming like ocaml"""
-        accumulator += self.products.count()
-        for subcategory in self.get_children():
-            accumulator = subcategory.get_product_count(accumulator)
-
-        return accumulator
-
-    class Meta:
-        verbose_name_plural = "Categories"
+        return self.name
 
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
+    slug = models.SlugField(default='product-default-slug')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    weight = models.DecimalField(max_digits=10, decimal_places=2)
+    country_of_origin = models.CharField(max_length=100)
+    Quality = models.CharField(max_length=100)
+    check_healthiness = models.CharField(max_length=100)
+    min_weight = models.DecimalField(max_digits=5, decimal_places=5)
     description = models.TextField()
-    creation_date = models.DateTimeField(auto_now_add=True)
-    categories = models.ManyToManyField(Category, related_name='products')
-    image = models.ImageField(upload_to='products/', null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    quantity = models.PositiveIntegerField(default=0)
+    image = models.ImageField(upload_to='products/')
 
     def __str__(self):
         return self.name
+
