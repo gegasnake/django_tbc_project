@@ -17,3 +17,6 @@ class CartView(TemplateView):
 
 class CheckoutView(TemplateView):
     template_name = 'chackout.html'
+
+
+
