@@ -53,8 +53,13 @@
                         <div class="row g-4">
                             <div class="col-xl-3">
                                 <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                                    <form action="{% url 'category' %}" method="get" class="d-flex">
+                                        <label>
+                                            <input type="search" class="form-control p-3"  name="search_bar" placeholder="keywords" aria-describedby="search-icon-1">
+                                        </label>
+                                        <button id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-6"></div>
@@ -146,12 +151,17 @@
                         <p>{{ product.description }}</p>
                         <div class="d-flex justify-content-between flex-lg-wrap">
                         <p class="text-dark fs-5 fw-bold mb-0">${{ product.price }} / kg</p>
-                        <form action="{% url 'cart' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">
-                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-                        </button>
-                    </form>
+                        <form method="post" action="{% url 'cart' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="hidden" name="action" value="add">
+                            <label>
+                                <input type="number" name="quantity" value="1" min="1" class="form-control d-inline w-auto mb-2">
+                            </label>
+                            <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                            </button>
+                        </form>
                 </div>
             </div>
                             </div>
