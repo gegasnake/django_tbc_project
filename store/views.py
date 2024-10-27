@@ -19,7 +19,6 @@ class ContactView(TemplateView):
     template_name = 'contact.html'
 
 
-
 class ProductListView(TemplateView):
     template_name = 'shop.html'
 
