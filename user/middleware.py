@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.utils import timezone
 
 
@@ -6,10 +8,17 @@ class LastActivityMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        response = self.get_response(request)
         if request.user.is_authenticated:
-            request.user.last_active_datetime = timezone.now()
-            request.user.save(update_fields=['last_active_datetime'])
+            # Define the time interval for updating
+            now = timezone.now()
+            last_active = request.user.last_active_datetime
+
+            # Only update if more than a minute has passed
+            if last_active is None or (now - last_active > timedelta(minutes=1)):
+                request.user.last_active_datetime = now
+                request.user.save(update_fields=['last_active_datetime'])
+
+        response = self.get_response(request)
         return response
 
 

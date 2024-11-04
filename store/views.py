@@ -1,26 +1,27 @@
+from django.contrib import messages
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, ListView
+from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView, ListView, FormView
+from django_tbc_project.settings import EMAIL_HOST_USER
+from store.forms import ContactForm
 from store.models import Category, Product, Tag
 from django.contrib.auth.decorators import login_required
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator([login_required, cache_page(600)], name='dispatch')
 class HomePageView(TemplateView):
     template_name = 'index.html'
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator([login_required, cache_page(600)], name='dispatch')
 class ProductDetailView(TemplateView):
     template_name = 'shop-detail.html'
 
 
-class ContactView(TemplateView):
-    template_name = 'contact.html'
-
-
-@method_decorator(login_required, name='dispatch')
+@method_decorator([login_required, cache_page(600)], name='dispatch')
 class ProductListView(ListView):
     template_name = 'shop.html'
     context_object_name = 'products'
@@ -91,3 +92,35 @@ class ProductListView(ListView):
         })
 
         return context
+
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def custom_500_view(request):
+    return render(request, '500.html', status=500)
+
+
+@method_decorator(cache_page(600), name='dispatch')
+class ContactView(FormView):
+    template_name = 'contact.html'  # Template to render
+    form_class = ContactForm  # Form class to use
+    success_url = '/'  # Redirect URL after successful submission
+
+    def form_valid(self, form):
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        message = form.cleaned_data['message']
+
+        # Send email
+        send_mail(
+            subject=f'Contact Form Submission from {name}',
+            message=message,
+            from_email=email,
+            recipient_list=['EMAIL_HOST_USER'],  # Replace with your recipient email
+            fail_silently=False,
+        )
+
+        messages.success(self.request, 'Your message has been sent successfully!')
+        return super().form_valid(form)  # Call the parent class's form_valid method

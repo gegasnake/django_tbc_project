@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django_tbc_project import settings
 from django.conf.urls.static import static
+from store.views import custom_404_view, custom_500_view
+from django.conf.urls import handler404, handler500
 
 urlpatterns = [
     path('store/', include('store.urls')),
@@ -27,6 +29,8 @@ urlpatterns = [
 
 ]
 
+handler404 = custom_404_view
+handler500 = custom_500_view
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
