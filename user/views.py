@@ -1,9 +1,6 @@
-# views.py
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
 from django.contrib import messages
 from .forms import UserRegistrationForm, CustomLoginForm
 

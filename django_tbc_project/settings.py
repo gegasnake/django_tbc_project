@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f=b$4pqqc3o^k&ank)e#46kpfc$3vx41wrhy^@!tzqecid03*v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # This is Media settings
 MEDIA_URL = '/media/'
@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'user.middleware.LastActivityMiddleware',
-    'user.middleware.InactivityMiddleware',
+    # 'user.middleware.InactivityMiddleware',
 
 ]
 
@@ -143,3 +143,13 @@ AUTH_USER_MODEL = 'user.CustomUser'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Adjust according to your app name
 ]
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'gegatvara@gmail.com'  # Your email
+EMAIL_HOST_PASSWORD = 'your_password'       # Your email password (use application password)
+# something went wrong with decouple package and I couldn't get what was happening, I was trying to create .env and
+# To have environment variables but couldn't do it
