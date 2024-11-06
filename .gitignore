@@ -1,4 +1,7 @@
 .idea
 .venv
+<<<<<<< HEAD
 __pycache__
+=======
+>>>>>>> main2
 .env
